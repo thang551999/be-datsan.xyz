@@ -84,6 +84,7 @@ export class OrderService {
         customer: user,
         place: createOrderDto.place,
         dayOrder: createOrderDto.orderDay,
+        dayOrderDateType: new Date(createOrderDto.orderDay),
         status: ORDER_STATUS.OK,
         phoneNumber: createOrderDto.phoneNumber,
         type: TypeOrder.PaymentWithWallet,

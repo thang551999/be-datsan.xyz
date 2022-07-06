@@ -51,6 +51,9 @@ export class Order {
   @Column()
   dayOrder: string;
 
+  @Column()
+  dayOrderDateType: Date;
+
   @OneToMany(
     () => HistoryBlockBooking,
     (historyBlockBooking) => historyBlockBooking.order,
