@@ -51,7 +51,7 @@ export class Order {
   @Column()
   dayOrder: string;
 
-  @Column()
+  @Column({ nullable: true })
   dayOrderDateType: Date;
 
   @OneToMany(
