@@ -22,6 +22,11 @@ export class AdminController {
     return this.orderService.findAll();
   }
 
+  @Get('report-order')
+  getReportOrder() {
+    return this.orderService.getAdminReportOrder();
+  }
+
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.orderService.findOne(+id);

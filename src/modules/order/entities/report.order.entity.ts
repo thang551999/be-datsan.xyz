@@ -18,7 +18,7 @@ export class ReportOrder {
   @Column({ nullable: true })
   content: string;
 
-  @OneToOne(() => Order, (order) => order.report)
+  @OneToOne(() => Order, (order) => order.report, { eager: true })
   @JoinColumn()
   order: Order;
 }

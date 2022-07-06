@@ -16,6 +16,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { HistoryBlockBooking } from './entities/history-block-booking.entity';
 import { Order } from './entities/order.entity';
+import { ReportOrder } from './entities/report.order.entity';
 
 @Injectable()
 export class OrderService {
@@ -32,7 +33,17 @@ export class OrderService {
     private historyBlockRepository: Repository<HistoryBlockBooking>,
     @InjectRepository(SystemConfigEntity)
     private systemConfigRepository: Repository<SystemConfigEntity>,
+    @InjectRepository(ReportOrder)
+    private reportOrdergRepository: Repository<ReportOrder>,
   ) {}
+
+  async createReportOrder(createOrderDto) {
+    const reportOrder = await this.reportOrdergRepository.create(
+      createOrderDto,
+    );
+    await this.reportOrdergRepository.save(reportOrder);
+  }
+
   async create(createOrderDto: CreateOrderDto, userInfor) {
     const { money, place, moneyTimes, timeBlocks } = await this.calcPrice(
       createOrderDto,
@@ -310,5 +321,21 @@ export class OrderService {
       currentPage: getParams.page,
       records: orderList[0],
     };
+  }
+
+  async getAdminReportOrder() {
+    return this.reportOrdergRepository.findBy({});
+  }
+
+  async getOrderReportOwner(id) {
+    return this.reportOrdergRepository.findBy({
+      order: {
+        place: {
+          owner: {
+            id,
+          },
+        },
+      },
+    });
   }
 }

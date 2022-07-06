@@ -10,6 +10,7 @@ import { HistoryBlockBooking } from './entities/history-block-booking.entity';
 import SystemConfigEntity from '../admin/entities/system-config.entity';
 import { OrderOwnerController } from './owner-order.controller';
 import { AdminController } from './admin-order.controller';
+import { ReportOrder } from './entities/report.order.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AdminController } from './admin-order.controller';
       OwnerPlace,
       HistoryBlockBooking,
       SystemConfigEntity,
+      ReportOrder,
     ]),
   ],
   controllers: [OrderController, OrderOwnerController, AdminController],

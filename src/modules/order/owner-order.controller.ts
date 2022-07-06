@@ -13,6 +13,11 @@ export class OrderOwnerController {
     return this.orderService.findOrderByOwner(user);
   }
 
+  @Get('report')
+  findReport(@UserInfo() user: IUserInfo) {
+    return this.orderService.getOrderReportOwner(user.relativeId);
+  }
+
   // @Get()
   // findOrderByOwner() {
   //   return this.orderService.findOrderByOwner();

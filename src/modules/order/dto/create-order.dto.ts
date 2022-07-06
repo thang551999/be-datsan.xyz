@@ -12,6 +12,7 @@ import {
 import { TypeOrder } from '../../../common/constant';
 import { IsDateStringFormat } from '../../../common/validate.decorator';
 import { Place } from '../../place/entities/place.entity';
+import { Order } from '../entities/order.entity';
 
 export class CreateOrderDto {
   @ApiProperty({ required: true, example: 'Lãng Yên hai bà trung' })
@@ -49,4 +50,15 @@ export class GetOrderHistory {
 
   @IsNumber()
   pageSize: number;
+}
+
+export class ReportOrderDto {
+  @IsArray()
+  images: string[];
+
+  @IsString()
+  content: string;
+
+  @IsNotEmpty()
+  order: Order;
 }

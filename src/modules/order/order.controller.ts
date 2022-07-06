@@ -48,7 +48,7 @@ export class OrderController {
 
   @Post('report-order')
   async reportOrder(@Body() createOrderDto: CreateOrderDto) {
-    // return this.orderService.create(createOrderDto);
+    return this.orderService.createReportOrder(createOrderDto);
   }
 
   @Post('apply/voucher')
