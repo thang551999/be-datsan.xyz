@@ -7,7 +7,6 @@ import { PayemntOwnerOrder } from '../../common/constant';
 import { Order } from '../order/entities/order.entity';
 import { OwnerPlace } from '../owner-place/entities/owner-place.entity';
 import { Place } from '../place/entities/place.entity';
-import { Usdg } from '../usdg/entities/usdg.entity';
 
 @Injectable()
 export class TasksService {
@@ -18,8 +17,6 @@ export class TasksService {
     private orderPlaceRepository: Repository<Order>,
     @InjectRepository(OwnerPlace)
     private onwerPlaceRepository: Repository<OwnerPlace>,
-    @InjectRepository(Usdg)
-    private usdgRepository: Repository<Usdg>,
   ) {}
   private readonly logger = new Logger(TasksService.name);
 
@@ -63,21 +60,5 @@ export class TasksService {
         await queryRunner.release();
       }
     }
-  }
-
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  async cronJobUsdg() {
-    const usdgs = await this.usdgRepository.findOneBy({});
-    console.log(usdgs);
-    await this.usdgRepository.update(
-      { id: usdgs.id },
-      {
-        currenIndex: new BigNumber(Number(usdgs.APY) / 35600)
-          .plus(new BigNumber(usdgs.currenIndex))
-          .decimalPlaces(4)
-          .toString(),
-      },
-    );
-    console.log(await this.usdgRepository.findOneBy({}));
   }
 }

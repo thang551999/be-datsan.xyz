@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ORDER_STATUS } from '../../../common/constant';
@@ -12,6 +14,7 @@ import { Customer } from '../../users/entities/customer.entity';
 import { VoucherOrder } from '../../voucher/entities/voucher_order.entity';
 import { HistoryBlockBooking } from './history-block-booking.entity';
 import { HistoryService } from './history-service.entity';
+import { ReportOrder } from './report.order.entity';
 
 @Entity({ name: 'order' })
 export class Order {
@@ -70,4 +73,8 @@ export class Order {
   // many to place
   @ManyToOne(() => Place, (place) => place.order)
   place: Place;
+
+  @OneToOne(() => ReportOrder, (reportOrder) => reportOrder.order)
+  @JoinColumn()
+  report: ReportOrder;
 }

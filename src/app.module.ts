@@ -21,8 +21,6 @@ import { TasksService } from './modules/task/update-order';
 import { Place } from './modules/place/entities/place.entity';
 import { Order } from './modules/order/entities/order.entity';
 import { OwnerPlace } from './modules/owner-place/entities/owner-place.entity';
-import { UsdgModule } from './modules/usdg/usdg.module';
-import { Usdg } from './modules/usdg/entities/usdg.entity';
 
 @Module({
   imports: [
@@ -50,7 +48,7 @@ import { Usdg } from './modules/usdg/entities/usdg.entity';
         // charset: 'utf8mb4_unicode_ci',
       }),
     }),
-    TypeOrmModule.forFeature([Place, Order, OwnerPlace, Usdg]),
+    TypeOrmModule.forFeature([Place, Order, OwnerPlace]),
     OrderModule,
     OwnerPlaceModule,
     PlaceModule,
@@ -62,7 +60,6 @@ import { Usdg } from './modules/usdg/entities/usdg.entity';
     ArticleModule,
     FindCompetitorModule,
     AdressModule,
-    UsdgModule,
   ],
   controllers: [AppController],
   providers: [AppService, TasksService],
