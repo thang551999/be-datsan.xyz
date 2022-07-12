@@ -31,6 +31,7 @@ export enum ORDER_STATUS {
   OK = 1,
   CONFIRM_FAIL = 2,
   ADMIN_PAY = 3,
+  FAIL = 4,
 }
 
 export enum TypeVoucher {

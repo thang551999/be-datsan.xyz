@@ -2,12 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import BigNumber from 'bignumber.js';
-import { getConnection, Repository } from 'typeorm';
-import { PayemntOwnerOrder } from '../../common/constant';
+import { getConnection, Repository, LessThan } from 'typeorm';
+import { ORDER_STATUS, PayemntOwnerOrder } from '../../common/constant';
 import { Order } from '../order/entities/order.entity';
 import { OwnerPlace } from '../owner-place/entities/owner-place.entity';
 import { Place } from '../place/entities/place.entity';
-
+import { subDays } from 'date-fns';
+import SystemConfigEntity from '../admin/entities/system-config.entity';
 @Injectable()
 export class TasksService {
   constructor(
@@ -17,15 +18,21 @@ export class TasksService {
     private orderPlaceRepository: Repository<Order>,
     @InjectRepository(OwnerPlace)
     private onwerPlaceRepository: Repository<OwnerPlace>,
+    @InjectRepository(SystemConfigEntity)
+    private systemCORepository: Repository<SystemConfigEntity>,
   ) {}
   private readonly logger = new Logger(TasksService.name);
 
   @Cron(CronExpression.EVERY_DAY_AT_11PM)
   async handleCron() {
+    const systemConfig = await this.systemCORepository.findOneBy({});
+    const day = subDays(new Date(), systemConfig.dateRefundMoney);
     const orders = await this.orderPlaceRepository.find({
       relations: ['place'],
       where: {
         isPayOwner: PayemntOwnerOrder.PaymentWait,
+        status: ORDER_STATUS.OK,
+        dayOrderDateType: LessThan(day),
       },
     });
     for (let index = 0; index < orders.length; index++) {

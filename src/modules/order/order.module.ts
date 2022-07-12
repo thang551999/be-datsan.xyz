@@ -11,6 +11,7 @@ import SystemConfigEntity from '../admin/entities/system-config.entity';
 import { OrderOwnerController } from './owner-order.controller';
 import { AdminController } from './admin-order.controller';
 import { ReportOrder } from './entities/report.order.entity';
+import { Voucher } from '../voucher/entities/voucher.entity';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ReportOrder } from './entities/report.order.entity';
       HistoryBlockBooking,
       SystemConfigEntity,
       ReportOrder,
+      Voucher,
     ]),
   ],
   controllers: [OrderController, OrderOwnerController, AdminController],

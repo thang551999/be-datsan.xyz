@@ -12,6 +12,7 @@ import SystemConfigEntity from '../admin/entities/system-config.entity';
 import { OwnerPlace } from '../owner-place/entities/owner-place.entity';
 import { Place } from '../place/entities/place.entity';
 import { Customer } from '../users/entities/customer.entity';
+import { Voucher } from '../voucher/entities/voucher.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { HistoryBlockBooking } from './entities/history-block-booking.entity';
@@ -35,6 +36,8 @@ export class OrderService {
     private systemConfigRepository: Repository<SystemConfigEntity>,
     @InjectRepository(ReportOrder)
     private reportOrdergRepository: Repository<ReportOrder>,
+    @InjectRepository(Voucher)
+    private voucherRepository: Repository<Voucher>,
   ) {}
 
   async createReportOrder(createOrderDto) {
@@ -96,14 +99,19 @@ export class OrderService {
         gasFee: resApplyVoucher.gasFee,
       });
       await this.orderPlaceRepository.save(order);
-      // await this.onwerPlaceRepository.update(
-      //   { id: place.owner.id },
-      //   {
-      //     money: new BigNumber(place.owner.money)
-      //       .plus(new BigNumber(totalPrice))
-      //       .toString(),
-      //   },
-      // );
+      await Promise.all(
+        createOrderDto.voucher.map(async (voucher) => {
+          const voucherById = await this.voucherRepository.findOneBy({
+            id: voucher.id,
+          });
+          await this.voucherRepository.update(
+            { id: voucher.id },
+            {
+              amount: voucherById.amount - 1,
+            },
+          );
+        }),
+      );
       await this.customerRepository.update(
         { id: user.id },
         {
@@ -113,7 +121,6 @@ export class OrderService {
         },
       );
       await queryRunner.manager.save(order);
-      // await queryRunner.manager.save(updateMoney);
       await queryRunner.commitTransaction();
       return order;
     } catch (error) {
@@ -338,5 +345,23 @@ export class OrderService {
         },
       },
     });
+  }
+
+  async AccpectReport(id) {
+    const reportOrder = await this.reportOrdergRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['order'],
+    });
+    if (reportOrder) {
+      await this.orderPlaceRepository.update(
+        {
+          id: reportOrder.order.id,
+        },
+        { status: ORDER_STATUS.FAIL },
+      );
+    }
+    return reportOrder;
   }
 }
