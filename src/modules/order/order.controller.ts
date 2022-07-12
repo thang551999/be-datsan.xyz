@@ -12,7 +12,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDto, GetOrderHistory } from './dto/create-order.dto';
+import {
+  CreateOrderDto,
+  GetOrderHistory,
+  ReportOrderDto,
+} from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OwnerAuthGuard, UserAuthGuard } from '../auth/jwt.strategy';
 import { IUserInfo, UserInfo } from '../../common/decorators/user.decorator';
@@ -47,7 +51,7 @@ export class OrderController {
   }
 
   @Post('report-order')
-  async reportOrder(@Body() createOrderDto: CreateOrderDto) {
+  async reportOrder(@Body() createOrderDto: ReportOrderDto) {
     return this.orderService.createReportOrder(createOrderDto);
   }
 
