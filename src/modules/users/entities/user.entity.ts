@@ -56,10 +56,6 @@ export class UserEntity {
   role: number;
 
   @ApiProperty()
-  @Column('int', { default: 0 })
-  money: number;
-
-  @ApiProperty()
   @Column('int', { default: 1, name: 'user_type' })
   userType: number;
 

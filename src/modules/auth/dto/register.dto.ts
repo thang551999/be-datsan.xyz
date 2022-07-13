@@ -44,7 +44,6 @@ export class ResUserInfoDto extends PickType(UserEntity, [
   'fullName',
   'phone',
   'role',
-  'money',
   'address',
   'role',
 ]) {}

@@ -3,7 +3,6 @@ import { UserEntity } from 'src/modules/users/entities/user.entity';
 export class UserBaseAffilate extends PickType(UserEntity, [
   'id',
   'fullName',
-  'money',
 ]) {}
 export class GetListAffildateDto {
   @ApiProperty({ type: UserBaseAffilate })

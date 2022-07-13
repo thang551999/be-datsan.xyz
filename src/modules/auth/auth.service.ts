@@ -261,18 +261,6 @@ export class AuthService {
         id,
       },
       relations: ['customer'],
-      select: [
-        'avatar',
-        'email',
-        'fullName',
-        'id',
-        'role',
-        'userType',
-        'phone',
-        'address',
-        'money',
-        'birthday',
-      ],
     });
 
     if (!user) {
