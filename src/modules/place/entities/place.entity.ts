@@ -65,6 +65,9 @@ export class Place {
   @CreateDateColumn()
   createAt: Date;
 
+  @Column({ default: '5' })
+  star: number;
+
   @UpdateDateColumn()
   updateAt: Date;
 

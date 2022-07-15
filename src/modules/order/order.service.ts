@@ -65,7 +65,7 @@ export class OrderService {
         id: userInfor.relativeId,
       },
     });
-    if (new BigNumber(user.money).isLessThan(new BigNumber(money)))
+    if (new BigNumber(user.money).isLessThan(new BigNumber(totalPrice)))
       return ORDER_MESSAGE.NOT_ENOUGH_MONEY;
     if (
       await this.checkExitOrder(
@@ -116,7 +116,7 @@ export class OrderService {
         { id: user.id },
         {
           money: new BigNumber(user.money)
-            .minus(new BigNumber(money))
+            .minus(new BigNumber(totalPrice))
             .toString(),
         },
       );
