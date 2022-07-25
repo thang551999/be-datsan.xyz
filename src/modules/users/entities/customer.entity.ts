@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -25,7 +26,7 @@ export class Customer {
   @OneToOne(() => UserEntity, (user) => user.customer, {
     eager: true,
   })
-  @JoinColumn()
+  @JoinTable()
   userInfo: UserEntity;
 
   @OneToMany(() => Comment, (comment) => comment.customer)
