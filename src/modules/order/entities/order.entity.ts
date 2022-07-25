@@ -70,7 +70,9 @@ export class Order {
   voucherOrder: VoucherOrder[];
 
   //many to one use
-  @ManyToOne(() => Customer, (customer) => customer.order)
+  @ManyToOne(() => Customer, (customer) => customer.order, {
+    eager: true,
+  })
   customer: Customer;
 
   // many to place
