@@ -72,18 +72,6 @@ export class UserEntity {
   birthday: Date;
 
   @ApiProperty()
-  @Column({ nullable: true })
-  forgotPasswordCode: string;
-
-  @ApiProperty()
-  @Column({ length: 50, nullable: true, name: 'code_forgot_password' })
-  codeForgotPassword: string;
-
-  @ApiProperty({ nullable: true })
-  @Column({ type: 'text', nullable: true, name: 'token_forgot_password' })
-  tokenForgotPassword: string;
-
-  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 

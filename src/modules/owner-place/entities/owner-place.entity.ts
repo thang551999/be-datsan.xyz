@@ -18,8 +18,8 @@ export class OwnerPlace {
   @Column()
   address: string;
 
-  @Column()
-  fullName: string;
+  // @Column()
+  // fullName: string;
 
   // @Column()
   // start: string;

@@ -29,9 +29,9 @@ jobs:
       - name: deploy
         uses: appleboy/ssh-action@master
         with:
-          host: 20.219.56.201 #hostname of server
-          username: VM #username login to server
-          password: VPSGIARE12345$ #password login to server
+          host: 178.128.216.222 #hostname of server
+          username: root #username login to server
+          password: thangDeptraikhoaito123!@#N #password login to server
           port: 22 #port of server - often port is 22
           script: | # run with multiple script
             cd /home/VM/doan-totnghiep-backend
