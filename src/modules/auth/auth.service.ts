@@ -89,6 +89,7 @@ export class AuthService {
       role: registerUserDto.role,
       phone: registerUserDto.phone,
       fullName: registerUserDto.fullName,
+      address: registerUserDto.address,
     });
     user.password = passwordHash;
     await this.usersRepository.save(user);
@@ -114,7 +115,7 @@ export class AuthService {
     }
     if (registerUserDto.role === ROLE.owner) {
       const ownerPlace = await this.ownerRepository.create({
-        address: registerUserDto.ownerPlace.bankSymbol,
+        address: registerUserDto.address,
         phone: registerUserDto.ownerPlace.bankSymbol,
         stk: registerUserDto.ownerPlace.bankSymbol,
         bankSymbol: registerUserDto.ownerPlace.bankSymbol,

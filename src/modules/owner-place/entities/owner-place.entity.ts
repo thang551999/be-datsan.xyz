@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -39,8 +40,10 @@ export class OwnerPlace {
   @Column({ default: '0' })
   money: string;
 
-  @OneToOne(() => UserEntity, (user) => user.ownerPlace)
-  @JoinColumn()
+  @OneToOne(() => UserEntity, (user) => user.ownerPlace, {
+    eager: true,
+  })
+  @JoinTable()
   userInfo: UserEntity;
 
   @OneToMany(() => Place, (place) => place.owner)

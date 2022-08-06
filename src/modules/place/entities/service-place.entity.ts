@@ -16,8 +16,8 @@ export class ServicePlace {
   @Column()
   price: string;
 
-  @Column({ nullable: true })
-  lastPrice: string;
+  // @Column({ nullable: true })
+  // lastPrice: string;
 
   @Column()
   name: string;

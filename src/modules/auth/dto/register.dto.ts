@@ -25,6 +25,10 @@ export class RegisterUserDto {
   fullName: string;
 
   @ApiProperty({ example: 'hello' })
+  @IsOptional()
+  address: string;
+
+  @ApiProperty({ example: 'hello' })
   @IsNotEmpty()
   phone: string;
 

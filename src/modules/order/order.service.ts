@@ -9,6 +9,7 @@ import {
   TypeVoucher,
 } from '../../common/constant';
 import SystemConfigEntity from '../admin/entities/system-config.entity';
+import { MailService } from '../mail/mail.service';
 import { OwnerPlace } from '../owner-place/entities/owner-place.entity';
 import { Place } from '../place/entities/place.entity';
 import { Customer } from '../users/entities/customer.entity';
@@ -38,6 +39,7 @@ export class OrderService {
     private reportOrdergRepository: Repository<ReportOrder>,
     @InjectRepository(Voucher)
     private voucherRepository: Repository<Voucher>,
+    private readonly mailerService: MailService,
   ) {}
 
   async createReportOrder(createOrderDto) {
@@ -91,7 +93,7 @@ export class OrderService {
         status: ORDER_STATUS.OK,
         phoneNumber: createOrderDto.phoneNumber,
         type: TypeOrder.PaymentWithWallet,
-        timeBlocks: timeBlocks,
+        //timeBlocks: timeBlocks,
         historyServices: createOrderDto.services,
         totalPrice,
         downPrice,
@@ -121,9 +123,29 @@ export class OrderService {
         },
       );
       await queryRunner.manager.save(order);
+      const place = await this.placeRepository.findOneBy({
+        id: createOrderDto.place.id,
+      });
+      await this.mailerService.sendMailUserInforOder({
+        email: user.userInfo.email,
+        nameUser: user.userInfo.fullName,
+        namePlace: place.name,
+        address: place.name,
+        phonePlace: place.name,
+        timeOder: createOrderDto.timeBooks,
+        dayOrder: createOrderDto.orderDay,
+        phone: user.userInfo.phone,
+      });
+      await this.mailerService.sendMailOwnerPlace({
+        email: place.owner.userInfo.email,
+        nameUser: user.userInfo.fullName,
+        timeOder: createOrderDto.timeBooks,
+        phone: user.userInfo.phone,
+      });
       await queryRunner.commitTransaction();
       return order;
     } catch (error) {
+      console.log(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();

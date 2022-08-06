@@ -12,6 +12,8 @@ import { OrderOwnerController } from './owner-order.controller';
 import { AdminController } from './admin-order.controller';
 import { ReportOrder } from './entities/report.order.entity';
 import { Voucher } from '../voucher/entities/voucher.entity';
+import { MailService } from '../mail/mail.service';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { Voucher } from '../voucher/entities/voucher.entity';
       ReportOrder,
       Voucher,
     ]),
+    MailModule,
+    MailService,
   ],
   controllers: [OrderController, OrderOwnerController, AdminController],
   providers: [OrderService],
