@@ -87,6 +87,8 @@ export class AuthService {
       email: registerUserDto.email,
       password: passwordHash,
       role: registerUserDto.role,
+      phone: registerUserDto.phone,
+      fullName: registerUserDto.fullName,
     });
     user.password = passwordHash;
     await this.usersRepository.save(user);

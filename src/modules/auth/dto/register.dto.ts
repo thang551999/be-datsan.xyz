@@ -21,6 +21,14 @@ export class RegisterUserDto {
   email: string;
 
   @ApiProperty({ example: 'hello' })
+  @IsNotEmpty()
+  fullName: string;
+
+  @ApiProperty({ example: 'hello' })
+  @IsNotEmpty()
+  phone: string;
+
+  @ApiProperty({ example: 'hello' })
   @IsEnum(ROLE)
   @IsNotEmpty()
   role: number;
