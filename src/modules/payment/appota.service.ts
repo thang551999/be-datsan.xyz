@@ -449,18 +449,28 @@ export class AppotaService {
         relations: ['user'],
       });
       console.log(order);
-      await this.vnpayTable.update(
-        { id: orderId },
-        { status: PaymentStatus.SUCCESS },
-      );
-      const money = new BigNumber(order.user.money)
-        .plus(new BigNumber(order.money))
-        .toString();
-      await this.customerRepository.update(order.user.id, { money });
-      console.log(money);
-      const rspCode = vnp_Params['vnp_ResponseCode'];
-      //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-      return { RspCode: '00', Message: 'success' };
+
+      if (vnp_Params['vnp_ResponseCode'] == '00') {
+        await this.vnpayTable.update(
+          { id: orderId },
+          { status: PaymentStatus.SUCCESS },
+        );
+        const money = new BigNumber(order.user.money)
+          .plus(new BigNumber(order.money))
+          .toString();
+        await this.customerRepository.update(order.user.id, { money });
+        console.log(money);
+        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+        return { RspCode: '00', Message: 'success' };
+      } else {
+        await this.vnpayTable.update(
+          { id: orderId },
+          { status: PaymentStatus.FAIL },
+        );
+
+        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+        return { RspCode: '00', Message: 'success' };
+      }
     } else {
       return { RspCode: '97', Message: 'Fail checksum' };
     }
