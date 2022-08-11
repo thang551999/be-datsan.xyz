@@ -65,6 +65,12 @@ export enum PayemntOwnerOrder {
   PaymentDone = 1,
 }
 
+export enum TypeReportOrder {
+  Reject = '1',
+  Accept = '-1',
+  Peeding = '0',
+}
+
 //format
 // HH:mm
 //Day YYYYMMDD

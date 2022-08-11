@@ -28,9 +28,14 @@ export class AdminController {
     return this.orderService.getAdminReportOrder();
   }
 
-  @Put(':id')
+  @Put('report-order/accept/:id')
   acceptReport(@Param('id') id: string) {
     return this.orderService.AccpectReport(id);
+  }
+
+  @Put('report-order/reject:id')
+  rejectReport(@Param('id') id: string) {
+    return this.orderService.RejectReport(id);
   }
 
   // @Get(':id')

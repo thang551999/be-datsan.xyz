@@ -15,6 +15,7 @@ import { TimeGold } from './entities/time-gold.entity';
 import { TypePlace } from './entities/type-place.entity';
 import { DateOff } from './entities/place-date-off.entity';
 import { HistoryBlockBooking } from '../order/entities/history-block-booking.entity';
+import * as moment from 'moment';
 @Injectable()
 export class PlaceService {
   constructor(
@@ -160,6 +161,51 @@ export class PlaceService {
       dayOrder: day.day,
       place: { id: placeId },
     });
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+    });
+    if (day.day == moment(currentDate).format('YYYY/MM/DD')) {
+      const numberMins =
+        Number(moment(currentDate).format('HH')) * 60 +
+        Number(moment(currentDate).format('mm')) +
+        Number(place.timeDistance);
+      const time =
+        Math.ceil(numberMins / place.timeDistance) * place.timeDistance;
+      const houss = ('0' + Math.floor(time / 60)).slice(-2);
+      const minus = ('0' + (time - Math.floor(time / 60) * 60)).slice(-2);
+      console.log(houss, place.timeDistance);
+      console.log(minus);
+      if (
+        Number(houss) < Number(place.timeOpen.slice(0, 2)) &&
+        Number(minus) < Number(place.timeOpen.slice(-2))
+      ) {
+        return this.getTimeFromBlock(
+          place.timeOpen,
+          place.timeClose,
+          place.timeGold,
+          place.timeDistance,
+          place.priceMin,
+          disableBlock,
+        );
+      } else if (
+        Number(houss) > Number(place.timeClose.slice(0, 2)) &&
+        Number(minus) > Number(place.timeClose.slice(-2))
+      ) {
+        console.log(189);
+        return [];
+      } else {
+        console.log(196);
+        return this.getTimeFromBlock(
+          `${houss}:${minus}`,
+          place.timeClose,
+          place.timeGold,
+          place.timeDistance,
+          place.priceMin,
+          disableBlock,
+        );
+      }
+    }
+
     return this.getTimeFromBlock(
       place.timeOpen,
       place.timeClose,

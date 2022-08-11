@@ -6,6 +6,7 @@ import {
   ORDER_MESSAGE,
   ORDER_STATUS,
   TypeOrder,
+  TypeReportOrder,
   TypeVoucher,
 } from '../../common/constant';
 import SystemConfigEntity from '../admin/entities/system-config.entity';
@@ -130,8 +131,8 @@ export class OrderService {
         email: user.userInfo.email,
         nameUser: user.userInfo.fullName,
         namePlace: place.name,
-        address: place.name,
-        phonePlace: place.name,
+        address: place.address,
+        phonePlace: place.owner.userInfo.phone,
         timeOder: createOrderDto.timeBooks,
         dayOrder: createOrderDto.orderDay,
         phone: user.userInfo.phone,
@@ -145,7 +146,6 @@ export class OrderService {
       await queryRunner.commitTransaction();
       return order;
     } catch (error) {
-      console.log(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -354,7 +354,9 @@ export class OrderService {
   }
 
   async getAdminReportOrder() {
-    return this.reportOrdergRepository.findBy({});
+    return this.reportOrdergRepository.findBy({
+      status: TypeReportOrder.Peeding,
+    });
   }
 
   async getOrderReportOwner(id) {
@@ -382,6 +384,49 @@ export class OrderService {
           id: reportOrder.order.id,
         },
         { status: ORDER_STATUS.FAIL },
+      );
+      await this.customerRepository.update(
+        {
+          id: reportOrder.order.customer.id,
+        },
+        {
+          money: new BigNumber(reportOrder.order.customer.money)
+            .plus(new BigNumber(reportOrder.order.totalPrice))
+            .toString(),
+        },
+      );
+      await this.reportOrdergRepository.update(
+        {
+          id: reportOrder.id,
+        },
+        {
+          status: TypeReportOrder.Accept,
+        },
+      );
+    }
+    return reportOrder;
+  }
+  async RejectReport(id) {
+    const reportOrder = await this.reportOrdergRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['order'],
+    });
+    if (reportOrder) {
+      await this.orderPlaceRepository.update(
+        {
+          id: reportOrder.order.id,
+        },
+        { status: ORDER_STATUS.OK },
+      );
+      await this.reportOrdergRepository.update(
+        {
+          id: reportOrder.id,
+        },
+        {
+          status: TypeReportOrder.Reject,
+        },
       );
     }
     return reportOrder;
