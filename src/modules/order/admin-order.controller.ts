@@ -33,7 +33,7 @@ export class AdminController {
     return this.orderService.AccpectReport(id);
   }
 
-  @Put('report-order/reject:id')
+  @Put('report-order/reject/:id')
   rejectReport(@Param('id') id: string) {
     return this.orderService.RejectReport(id);
   }

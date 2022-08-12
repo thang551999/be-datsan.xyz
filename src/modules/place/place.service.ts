@@ -166,14 +166,23 @@ export class PlaceService {
     });
     if (day.day == moment(currentDate).format('YYYY/MM/DD')) {
       Number(place.timeDistance);
-      const numberMins =
+      const currentTimeUnitMinus =
         Number(moment(currentDate).format('HH')) * 60 +
-        Number(moment(currentDate).format('mm')) +
-        Number(place.timeDistance);
-      const time =
-        Math.ceil(numberMins / place.timeDistance) * place.timeDistance;
-      const houss = ('0' + Math.floor(time / 60)).slice(-2);
-      const minus = ('0' + (time - Math.floor(time / 60) * 60)).slice(-2);
+        Number(moment(currentDate).format('mm'));
+      const timeOpenTimeUnitMinus =
+        Number(place.timeOpen.slice(0, 2)) * 60 +
+        Number(place.timeOpen.slice(-2));
+
+      const timeDistanceCurrentTimeTimeOpen =
+        Math.ceil(
+          (currentTimeUnitMinus - timeOpenTimeUnitMinus) / place.timeDistance,
+        ) * place.timeDistance;
+      const timeBlock = timeOpenTimeUnitMinus + timeDistanceCurrentTimeTimeOpen;
+
+      const houss = ('0' + Math.floor(timeBlock / 60)).slice(-2);
+      const minus = ('0' + (timeBlock - Math.floor(timeBlock / 60) * 60)).slice(
+        -2,
+      );
       if (
         Number(houss) < Number(place.timeOpen.slice(0, 2)) &&
         Number(minus) < Number(place.timeOpen.slice(-2))

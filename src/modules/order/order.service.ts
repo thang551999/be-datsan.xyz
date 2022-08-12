@@ -383,7 +383,7 @@ export class OrderService {
         {
           id: reportOrder.order.id,
         },
-        { status: ORDER_STATUS.FAIL },
+        { status: ORDER_STATUS.FAIL, customer: null },
       );
       await this.customerRepository.update(
         {
