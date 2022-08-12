@@ -161,10 +161,11 @@ export class PlaceService {
       dayOrder: day.day,
       place: { id: placeId },
     });
-    const currentDate = new Date().toLocaleDateString('en-US', {
+    const currentDate = new Date().toLocaleString('se-SE', {
       timeZone: 'Asia/Ho_Chi_Minh',
     });
     if (day.day == moment(currentDate).format('YYYY/MM/DD')) {
+      Number(place.timeDistance);
       const numberMins =
         Number(moment(currentDate).format('HH')) * 60 +
         Number(moment(currentDate).format('mm')) +
@@ -173,8 +174,6 @@ export class PlaceService {
         Math.ceil(numberMins / place.timeDistance) * place.timeDistance;
       const houss = ('0' + Math.floor(time / 60)).slice(-2);
       const minus = ('0' + (time - Math.floor(time / 60) * 60)).slice(-2);
-      console.log(houss, place.timeDistance);
-      console.log(minus);
       if (
         Number(houss) < Number(place.timeOpen.slice(0, 2)) &&
         Number(minus) < Number(place.timeOpen.slice(-2))
