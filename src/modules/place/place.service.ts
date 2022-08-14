@@ -79,7 +79,6 @@ export class PlaceService {
             ? Like(`%${getParams.address}%`)
             : Like(`%%`),
         };
-    console.log(queryTypePlace);
     const places = await this.placeRepository.findAndCount({
       where: { ...queryTypePlace },
       skip: (getParams.page - 1) * getParams.pageSize,
@@ -199,10 +198,8 @@ export class PlaceService {
         Number(houss) > Number(place.timeClose.slice(0, 2)) &&
         Number(minus) > Number(place.timeClose.slice(-2))
       ) {
-        console.log(189);
         return [];
       } else {
-        console.log(196);
         return this.getTimeFromBlock(
           `${houss}:${minus}`,
           place.timeClose,
@@ -275,31 +272,32 @@ export class PlaceService {
       timeClose.slice(-2),
     );
     let timeConut = timeStart;
-
     while (timeConut < timeEnd) {
       timeConut = addMinutes(timeConut, timeDistance);
-      const timeAdd = timeConut.toString().slice(16, 21);
-      const isTimeGood = TimeGolds.find(
-        (timeGold) => timeGold.timeStart == timeAdd,
-      );
-      const isDisbleBlock = disableBlocks.find(
-        (disableBlock) => disableBlock.timeStart === timeAdd,
-      );
-      if (isTimeGood) {
-        times.push({
-          time: timeAdd,
-          price: isTimeGood.price,
-          isReady: isDisbleBlock ? false : true,
-        });
-      } else {
-        times.push({
-          time: timeAdd,
-          price,
-          isReady: isDisbleBlock ? false : true,
-        });
+      if (timeConut < timeEnd) {
+        const timeAdd = timeConut.toString().slice(16, 21);
+        const isTimeGood = TimeGolds.find(
+          (timeGold) => timeGold.timeStart == timeAdd,
+        );
+        const isDisbleBlock = disableBlocks.find(
+          (disableBlock) => disableBlock.timeStart === timeAdd,
+        );
+        if (isTimeGood) {
+          times.push({
+            time: timeAdd,
+            price: isTimeGood.price,
+            isReady: isDisbleBlock ? false : true,
+          });
+        } else {
+          times.push({
+            time: timeAdd,
+            price,
+            isReady: isDisbleBlock ? false : true,
+          });
+        }
       }
     }
-
+    console.log(times);
     return times;
   }
 
