@@ -123,6 +123,7 @@ export class OwnerPlaceController {
   ) {
     return this.placeService.updateTimeGold(id, updatePlaceDto, user);
   }
+
   @Put('service/:id')
   updateService(
     @Param('id') id: string,
@@ -135,6 +136,26 @@ export class OwnerPlaceController {
   @Put(':id')
   update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
     return this.placeService.update(id, updatePlaceDto);
+  }
+
+  @Delete('service/:id')
+  @UseGuards(OwnerAuthGuard)
+  async removeService(@Param('id') id: string, @UserInfo() user: IUserInfo) {
+    await this.placeService.removeServicePlace(id, user);
+    return {
+      code: API_SUCCESS,
+      message: PLACE_MESSAGE.DISABLE_SUCCESS,
+    };
+  }
+
+  @Delete('time-gold/:id')
+  @UseGuards(OwnerAuthGuard)
+  async removeTimeGold(@Param('id') id: string, @UserInfo() user: IUserInfo) {
+    await this.placeService.removeTimeGold(id, user);
+    return {
+      code: API_SUCCESS,
+      message: PLACE_MESSAGE.DISABLE_SUCCESS,
+    };
   }
 
   @Delete(':id')

@@ -297,12 +297,53 @@ export class PlaceService {
         }
       }
     }
-    console.log(times);
     return times;
   }
 
   async update(id: string, updatePlaceDto: UpdatePlaceDto) {
-    const update = await this.placeRepository.update(id, updatePlaceDto);
+    console.log(updatePlaceDto);
+
+    if (updatePlaceDto.services) {
+      updatePlaceDto.services.forEach(async (element) => {
+        if (element.id) {
+          await this.servicePlaceRepository.update(element.id, element);
+        } else {
+          await this.servicePlaceRepository.save({
+            ...element,
+            image: '',
+            isDelete: false,
+            place: {
+              id: id,
+            },
+          });
+        }
+      });
+    }
+    if (updatePlaceDto.timeGold) {
+      updatePlaceDto.timeGold.forEach(async (element) => {
+        if (element.id) {
+          await this.timeGoldPlaceRepository.update(element.id, element);
+        } else {
+          await this.timeGoldPlaceRepository.save({
+            ...element,
+            lastPrice: null,
+            place: {
+              id: id,
+            },
+          });
+        }
+      });
+    }
+    const update = await this.placeRepository.update(id, {
+      name: updatePlaceDto.name,
+      address: updatePlaceDto.address,
+      timeOpen: updatePlaceDto.timeOpen,
+      description: updatePlaceDto.description,
+      timeClose: updatePlaceDto.timeClose,
+      timeDistance: updatePlaceDto.timeDistance,
+      imageDetails: updatePlaceDto.imageDetails,
+      limitUsers: updatePlaceDto.limitUsers,
+    });
     return { message: 'Cập nhật thành công' };
   }
 
@@ -315,6 +356,32 @@ export class PlaceService {
       await this.placeRepository.update(id, {
         isEnable: false,
         isDeleted: true,
+      });
+    }
+    return PLACE_MESSAGE.DISABLE_SUCCESS;
+  }
+
+  async removeServicePlace(id: string, user) {
+    const service = await this.servicePlaceRepository.findOne({
+      where: { id: id },
+      relations: ['place'],
+    });
+    if (service.place.owner.id === user.relativeId) {
+      await this.servicePlaceRepository.update(id, {
+        place: null,
+      });
+    }
+    return PLACE_MESSAGE.DISABLE_SUCCESS;
+  }
+
+  async removeTimeGold(id: string, user) {
+    const timeGold = await this.timeGoldPlaceRepository.findOne({
+      where: { id: id },
+      relations: ['place'],
+    });
+    if (timeGold.place.owner.id === user.relativeId) {
+      await this.timeGoldPlaceRepository.update(id, {
+        place: null,
       });
     }
     return PLACE_MESSAGE.DISABLE_SUCCESS;
