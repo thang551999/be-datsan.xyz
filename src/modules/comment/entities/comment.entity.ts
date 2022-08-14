@@ -35,10 +35,12 @@ export class Comment {
   @ManyToOne(() => Place, (place) => place.comments, { eager: true })
   place: Place;
 
-  @ManyToOne(() => Customer, (customer) => customer.comments)
+  @ManyToOne(() => Customer, (customer) => customer.comments, { eager: true })
   customer: Customer;
 
-  @ManyToOne(() => UserEntity, (customer) => customer.comments)
+  @ManyToOne(() => UserEntity, (customer) => customer.comments, {
+    eager: true,
+  })
   user: UserEntity;
 
   // many to one user
