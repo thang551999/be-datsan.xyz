@@ -94,7 +94,7 @@ export class OrderService {
         status: ORDER_STATUS.OK,
         phoneNumber: createOrderDto.phoneNumber,
         type: TypeOrder.PaymentWithWallet,
-        //timeBlocks: timeBlocks,
+        timeBlocks: timeBlocks,
         historyServices: createOrderDto.services,
         totalPrice,
         downPrice,
