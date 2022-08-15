@@ -47,6 +47,7 @@ export class OrderService {
     const reportOrder = await this.reportOrdergRepository.create(
       createOrderDto,
     );
+    await this.mailerService.sendReport(createOrderDto.order.customer.userInfo);
     await this.reportOrdergRepository.save(reportOrder);
   }
 
@@ -403,6 +404,20 @@ export class OrderService {
           status: TypeReportOrder.Accept,
         },
       );
+
+      console.log(reportOrder);
+      await this.mailerService.sendResultReport({
+        email: reportOrder.order.customer.userInfo.email,
+        id: reportOrder.order.id,
+        nameUser: reportOrder.order.customer.userInfo.fullName,
+        namePlace: reportOrder.order.place.name,
+        address: reportOrder.order.place.address,
+        phonePlace: reportOrder.order.place.owner.userInfo.phone,
+        timeOrder: reportOrder.order.timeBlocks,
+        dayOrder: reportOrder.order.dayOrder,
+        phone: reportOrder.order.phoneNumber,
+        result: 'Thành công',
+      });
     }
     return reportOrder;
   }
@@ -428,6 +443,18 @@ export class OrderService {
           status: TypeReportOrder.Reject,
         },
       );
+      await this.mailerService.sendResultReport({
+        email: reportOrder.order.customer.userInfo.email,
+        id: reportOrder.order.id,
+        nameUser: reportOrder.order.customer.userInfo.fullName,
+        namePlace: reportOrder.order.place.name,
+        address: reportOrder.order.place.address,
+        phonePlace: reportOrder.order.place.owner.userInfo.phone,
+        timeOrder: reportOrder.order.timeBlocks,
+        dayOrder: reportOrder.order.dayOrder,
+        phone: reportOrder.order.phoneNumber,
+        result: 'Thất bại',
+      });
     }
     return reportOrder;
   }

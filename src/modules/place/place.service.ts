@@ -182,8 +182,8 @@ export class PlaceService {
       const minus = ('0' + (timeBlock - Math.floor(timeBlock / 60) * 60)).slice(
         -2,
       );
-      console.log(houss)
-      console.log(minus)
+      console.log(houss);
+      console.log(minus);
       if (
         Number(houss) < Number(place.timeOpen.slice(0, 2)) &&
         Number(minus) < Number(place.timeOpen.slice(-2))
@@ -197,9 +197,9 @@ export class PlaceService {
           disableBlock,
         );
       } else if (
-        Number(houss) > Number(place.timeClose.slice(0, 2)) &&
-        Number(minus) > Number(place.timeClose.slice(-2)) ||
-        Number(houss)==25
+        (Number(houss) > Number(place.timeClose.slice(0, 2)) &&
+          Number(minus) > Number(place.timeClose.slice(-2))) ||
+        Number(houss) == 25
       ) {
         return [];
       } else {

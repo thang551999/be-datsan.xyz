@@ -76,7 +76,9 @@ export class Order {
   customer: Customer;
 
   // many to place
-  @ManyToOne(() => Place, (place) => place.order)
+  @ManyToOne(() => Place, (place) => place.order, {
+    eager: true,
+  })
   place: Place;
 
   @OneToOne(() => ReportOrder, (reportOrder) => reportOrder.order)

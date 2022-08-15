@@ -48,4 +48,32 @@ export class MailService {
       },
     });
   }
+
+  async sendReport(email) {
+    await this.mailerService.sendMail({
+      to: email.email,
+      subject: 'Khiếu nại đơn hàng',
+      template: 'report-order', // `.hbs` extension is appended automatically
+      context: {},
+    });
+  }
+
+  async sendResultReport(order) {
+    await this.mailerService.sendMail({
+      to: order.email,
+      subject: 'Khiếu nại đơn hàng',
+      template: 'report-order-result', // `.hbs` extension is appended automatically
+      context: {
+        orderId: order.id,
+        nameUser: order.nameUser,
+        namePlace: order.namePlace,
+        address: order.address,
+        phonePlace: order.phonePlace,
+        timeOder: order.timeOder,
+        dayOrder: order.dayOrder,
+        phone: order.phone,
+        result: order.result,
+      },
+    });
+  }
 }
