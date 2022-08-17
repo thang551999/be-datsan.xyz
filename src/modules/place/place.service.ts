@@ -415,13 +415,13 @@ export class PlaceService {
           id: user.relativeId,
         },
       },
-      skip: (getParams.page - 1) * getParams.pageSize,
-      take: getParams.pageSize,
+      // skip: (getParams.page - 1) * getParams.pageSize,
+      // take: getParams.pageSize,
     });
     return {
       total: places[1],
-      pageSize: getParams.pageSize,
-      currentPage: getParams.page,
+      // pageSize: getParams.pageSize,
+      // currentPage: getParams.page,
       records: places[0],
     };
   }

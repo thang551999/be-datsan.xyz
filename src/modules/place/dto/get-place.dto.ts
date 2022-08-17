@@ -35,15 +35,15 @@ export class GetPlaceParams {
 }
 
 export class GetPlaceOwner {
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  @Min(0)
-  pageSize: number;
+  // @ApiProperty({ example: 1 })
+  // @IsNumber()
+  // @Min(0)
+  // pageSize: number;
 
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  @Min(0)
-  page: number;
+  // @ApiProperty({ example: 1 })
+  // @IsNumber()
+  // @Min(0)
+  // page: number;
 
   @ApiProperty({ example: 1 })
   @IsOptional()
