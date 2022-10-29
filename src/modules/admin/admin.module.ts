@@ -8,7 +8,7 @@ import { Order } from '../order/entities/order.entity';
 import { Customer } from '../users/entities/customer.entity';
 import { OwnerPlace } from '../owner-place/entities/owner-place.entity';
 import { UserEntity } from '../users/entities/user.entity';
-// import { PayOwnerHistory } from './entities/pay-owner-history.entity';
+import { PayOwnerHistory } from './entities/pay-owner-history.entity';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { UserEntity } from '../users/entities/user.entity';
       Customer,
       OwnerPlace,
       UserEntity,
-      // PayOwnerHistory,
+      PayOwnerHistory,
       OwnerPlace,
     ]),
   ],
